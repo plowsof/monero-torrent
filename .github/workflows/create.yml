@@ -20,13 +20,13 @@ jobs:
       - name: create release notes
         run: |
           {
-            echo "### 🧲 Link"
-            echo '```'
-            transmission-show -m watch/*
-            echo '```'
             echo "### Torrent info"
             echo '```'
             transmission-show watch/*
+            echo '```'
+            echo "### 🧲 Link"
+            echo '```'
+            transmission-show -m watch/*
             echo '```'
           } >> release-notes.md
       - name: Release
