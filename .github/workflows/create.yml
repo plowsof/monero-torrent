@@ -11,10 +11,14 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: recursive
       - name: Install dependencies
         run: |
           sudo apt-get install -y transmission-cli
-          pip3 install py3createtorrent==1.2.1 bencodepy==0.9.5
+          cd submodules/mktorrent
+          make
+          mv mktorrent ../../
       - name: download files and create torrent
         run: ./create_monero_torrent.sh
       - name: create release notes

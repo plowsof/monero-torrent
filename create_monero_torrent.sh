@@ -5,7 +5,7 @@ OUTPUT_DIR="downloads"
 TORRENT_DIR="watch"
 
 # afaict the only important thing for hash determinism is piece size
-PIECE_SIZE=512
+PIECE_SIZE=21
 
 mkdir -p "$OUTPUT_DIR"
 mkdir -p "$TORRENT_DIR"
@@ -62,4 +62,4 @@ cd ../..
 
 #transmission-show "$TORRENT_DIR/$torrent.torrent"
 
-py3createtorrent -p 512 -o watch/ -c "$torrent_comment" --webseed "https://dlsrc.getmonero.org/" --webseed "http://node.monerodevs.org/" -v $OUTPUT_DIR/$torrent
+./mktorrent -l $PIECE_SIZE -o "watch/$torrent.torrent" -n $torrent -c "$torrent_comment" -w "https://dlsrc.getmonero.org/" -w "http://node.monerodevs.org/" -v $OUTPUT_DIR/$torrent
