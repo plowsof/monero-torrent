@@ -1,0 +1,4 @@
+
+[submodule "submodules/mktorrent"]
+	path = submodules/mktorrent
+	url = https://github.com/pobrn/mktorrent.git
