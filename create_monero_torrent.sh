@@ -22,10 +22,10 @@ torrent_comment="Multi file torrent for the Monero project $version"
 
 mkdir -p "$OUTPUT_DIR/$torrent"
 
-mv "$OUTPUT_DIR/hashes.txt" "$OUTPUT_DIR/$torrent/"
+mv "$OUTPUT_DIR/hashes.txt" "$OUTPUT_DIR/$torrent/hashes-$version.txt"
 mv "$OUTPUT_DIR/binaryfate.asc" "$OUTPUT_DIR/$torrent/"
 
-for file in $(awk '/monero-/ {print $2}' "$OUTPUT_DIR/$torrent/hashes.txt"); do
+for file in $(awk '/monero-/ {print $2}' "$OUTPUT_DIR/$torrent/hashes-$version.txt"); do
   dir=cli
   if [[ $file =~ gui ]]; then
       dir=gui
@@ -42,7 +42,7 @@ done
 
 cd "$OUTPUT_DIR/$torrent"
 
-grep 'monero-' hashes.txt | while read -r hash file; do
+grep 'monero-' hashes-$version.txt | while read -r hash file; do
   path="cli/$file"
   if [[ $file =~ gui ]]; then
     path="gui/$file"
