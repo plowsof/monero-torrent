@@ -33,6 +33,9 @@ jobs:
             transmission-show -m watch/*
             echo '```'
           } >> release-notes.md
+      - name: Add release notes to step summary
+        run: |
+          cat release-notes.md >> $GITHUB_STEP_SUMMARY
       - name: Release
         uses: softprops/action-gh-release@v2
         if: github.ref_type == 'tag'
