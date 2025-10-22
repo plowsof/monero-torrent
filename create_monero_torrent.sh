@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#todo the this:-or_this trick
-OUTPUT_DIR="downloads"
-TORRENT_DIR="watch"
+OUTPUT_DIR="${OUTPUT_DIR:-downloads}"
+TORRENT_DIR="${TORRENT_DIR:-watch}"
+
 
 # afaict the only important thing for hash determinism is piece size
 PIECE_SIZE=21
@@ -62,4 +62,4 @@ cd ../..
 
 #transmission-show "$TORRENT_DIR/$torrent.torrent"
 
-./mktorrent -l $PIECE_SIZE -o "watch/$torrent.torrent" -n $torrent -c "$torrent_comment" -w "https://dlsrc.getmonero.org/" -w "http://node.monerodevs.org/" -v $OUTPUT_DIR/$torrent
+./mktorrent -l $PIECE_SIZE -o "$TORRENT_DIR/$torrent.torrent" -n $torrent -c "$torrent_comment" -w "https://dlsrc.getmonero.org/" -w "http://node.monerodevs.org/" -v $OUTPUT_DIR/$torrent
