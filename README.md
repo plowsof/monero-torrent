@@ -37,3 +37,21 @@ the shell script outputs this:
 └── watch
     └── monero-v0.18.4.2.torrent
 ```
+# usage
+
+Grab the torrent from https://github.com/plowsof/monero-torrent/releases
+
+To build the torrent file:
+- Clone this repo, build and copy the mktorrent binary to the `monero-torrent` dir and run `create_monero_torrent.sh`:
+```
+git clone --recurse-submodules https://github.com/plowsof/monero-torrent && cd monero-torrent && cd submodules/mktorrent && make && mv mktorrent ../../ && cd ../.. && chmod +x create_monero_torrent.sh && ./create_monero_torrent.sh
+```
+
+- By default the script downloads binaries from getmoneros CDN
+- you can specify the local path of `binaryfate.asc` , `hashes.txt` and the CDN base dir which contains `cli` and `gui` folders containing binaries.
+```
+CDN_URL="$HOME/monero-torrent/downloads/monero-v0.18.4.3" \
+BF_KEY_URL="$HOME/monero-torrent/downloads/monero-v0.18.4.3/binaryfate.asc" \
+HASHES_URL="$HOME/monero-torrent/downloads/monero-v0.18.4.3/hashes.txt" \
+./create_monero_torrent.sh
+```
