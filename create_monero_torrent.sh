@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+set -o pipefail
 
 #remote url or local full path
 #local_cdn_dir
