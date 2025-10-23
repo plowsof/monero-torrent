@@ -1,8 +1,16 @@
 #!/bin/bash
 
+#remote url or local full path
+#local_cdn_dir
+#├── cli
+#    ├── monero_cli_files
+#└── gui
+#    ├── monero-gui-files
+CDN_URL="${CDN_URL:-https://dlsrc.getmonero.org}"
 OUTPUT_DIR="${OUTPUT_DIR:-downloads}"
 TORRENT_DIR="${TORRENT_DIR:-watch}"
-
+HASHES_URL="${HASHES_URL:-https://www.getmonero.org/downloads/hashes.txt}"
+BF_KEY_URL="${BF_KEY_URL:-https://raw.githubusercontent.com/monero-project/monero/master/utils/gpg_keys/binaryfate.asc}"
 
 # afaict the only important thing for hash determinism is piece size
 PIECE_SIZE=21
@@ -10,9 +18,26 @@ PIECE_SIZE=21
 mkdir -p "$OUTPUT_DIR"
 mkdir -p "$TORRENT_DIR"
 
+is_url() {
+    case "$1" in
+        http://*|https://*) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
 # reinvent the wheel and download/verify binaries
-curl -sL https://www.getmonero.org/downloads/hashes.txt -o "$OUTPUT_DIR/hashes.txt"
-curl -sL https://raw.githubusercontent.com/monero-project/monero/master/utils/gpg_keys/binaryfate.asc -o "$OUTPUT_DIR/binaryfate.asc"
+if is_url "$HASHES_URL"; then
+  curl -sL $HASHES_URL -o "$OUTPUT_DIR/hashes.txt"
+else
+  cp $HASHES_URL "$OUTPUT_DIR/hashes.txt"
+fi
+
+if is_url "$BF_KEY_URL"; then
+  curl -sL $BF_KEY_URL -o "$OUTPUT_DIR/binaryfate.asc"
+else
+  cp $BF_KEY_URL "$OUTPUT_DIR/binaryfate.asc"
+fi
+
 gpg --import "$OUTPUT_DIR/binaryfate.asc"
 gpg --verify "$OUTPUT_DIR/hashes.txt"
 
@@ -32,12 +57,15 @@ for file in $(awk '/monero-/ {print $2}' "$OUTPUT_DIR/$torrent/hashes-$version.t
   fi
   # dont re-download if exists
   [ -f "$OUTPUT_DIR/$torrent/$dir/$file" ] && continue
-  echo "Downloading $file..."
-  url=https://dlsrc.getmonero.org/${dir}/${file}
+  url=$CDN_URL/${dir}/${file}
   # make sure subdir exists
   mkdir -p "$OUTPUT_DIR/$torrent/$dir"
   # webseed compatible https://www.bittorrent.org/beps/bep_0019.html
-  curl -sLO --output-dir "$OUTPUT_DIR/$torrent/$dir" "$url"
+  if is_url "$CDN_URL"; then
+    curl -sLO --output-dir "$OUTPUT_DIR/$torrent/$dir" "$url"
+  else
+    cp $url "$OUTPUT_DIR/$torrent/$dir"
+  fi
 done
 
 cd "$OUTPUT_DIR/$torrent"
@@ -55,11 +83,5 @@ grep 'monero-' hashes-$version.txt | while read -r hash file; do
 done
 
 cd ../..
-
-#transmission-create -s "$PIECE_SIZE" -o "$TORRENT_DIR/$torrent.torrent" --anonymize "$OUTPUT_DIR/$torrent"
-# prints the magnet link
-#transmission-show -m "$TORRENT_DIR/$torrent.torrent"
-
-#transmission-show "$TORRENT_DIR/$torrent.torrent"
 
 ./mktorrent -l $PIECE_SIZE -o "$TORRENT_DIR/$torrent.torrent" -n $torrent -c "$torrent_comment" -w "https://dlsrc.getmonero.org/" -v $OUTPUT_DIR/$torrent
