@@ -48,10 +48,11 @@ git clone --recurse-submodules https://github.com/plowsof/monero-torrent && cd m
 ```
 
 - By default the script downloads binaries from getmoneros CDN
-- you can specify the local path of `binaryfate.asc` , `hashes.txt` and the CDN base dir which contains `cli` and `gui` folders containing binaries.
+- you can specify the local path of `binaryfate.asc` , `hashes.txt` and the CDN base dir which contains the latest monero binaries. _Note: they do not have to be nested in any particular folder, the script will find them recursively and copy them into the torrents file folder_
+
 ```
-CDN_URL="$HOME/monero-torrent/downloads/monero-v0.18.4.3" \
-BF_KEY_URL="$HOME/monero-torrent/downloads/monero-v0.18.4.3/binaryfate.asc" \
-HASHES_URL="$HOME/monero-torrent/downloads/monero-v0.18.4.3/hashes.txt" \
+CDN_URL="$HOME/monero-v0.18.4.3" \
+BF_KEY_URL="$HOME/binaryfate.asc" \
+HASHES_URL="$HOME/hashes.txt" \
 ./create_monero_torrent.sh
 ```

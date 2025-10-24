@@ -3,11 +3,12 @@ set -e
 set -o pipefail
 
 #remote url or local full path
-#local_cdn_dir
+#remote_cdn_url
 #├── cli
 #    ├── monero_cli_files
 #└── gui
 #    ├── monero-gui-files
+#local cdn path can have binaries nested in folders OR in the same folder as this serches recursively
 CDN_URL="${CDN_URL:-https://dlsrc.getmonero.org}"
 OUTPUT_DIR="${OUTPUT_DIR:-downloads}"
 TORRENT_DIR="${TORRENT_DIR:-watch}"
@@ -66,7 +67,14 @@ for file in $(awk '/monero-/ {print $2}' "$OUTPUT_DIR/$torrent/hashes-$version.t
   if is_url "$CDN_URL"; then
     curl -sLO --output-dir "$OUTPUT_DIR/$torrent/$dir" "$url"
   else
-    cp $url "$OUTPUT_DIR/$torrent/$dir"
+    # recursively find a file https://stackoverflow.com/a/656744
+    src_file=$(find "$CDN_URL" -type f -name "$file" -print -quit)
+    if [ "$src_file" ]; then
+      cp "$src_file" "$OUTPUT_DIR/$torrent/$dir"
+    else
+      echo "$file not found in $CDN_URL"
+      exit 1
+    fi
   fi
 done
 
