@@ -32,13 +32,27 @@ is_url() {
 if is_url "$HASHES_URL"; then
   curl -sL $HASHES_URL -o "$OUTPUT_DIR/hashes.txt"
 else
-  cp $HASHES_URL "$OUTPUT_DIR/hashes.txt"
+  # recursively find a file https://stackoverflow.com/a/656744
+  src_file=$(find "$CDN_URL" -type f -name "$HASHES_URL" -print -quit)
+  if [ "$src_file" ]; then
+    cp "$src_file" "$OUTPUT_DIR/hashes.txt"
+  else
+    echo "$file not found in $CDN_URL"
+    exit 1
+  fi
 fi
 
 if is_url "$BF_KEY_URL"; then
   curl -sL $BF_KEY_URL -o "$OUTPUT_DIR/binaryfate.asc"
 else
-  cp $BF_KEY_URL "$OUTPUT_DIR/binaryfate.asc"
+  # recursively find a file https://stackoverflow.com/a/656744
+  src_file=$(find "$CDN_URL" -type f -name "$BF_KEY_URL" -print -quit)
+  if [ "$src_file" ]; then
+    cp "$src_file" "$OUTPUT_DIR/binaryfate.asc"
+  else
+    echo "$file not found in $CDN_URL"
+    exit 1
+  fi
 fi
 
 gpg --import "$OUTPUT_DIR/binaryfate.asc"

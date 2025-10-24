@@ -1,0 +1,76 @@
+name: Build remote / local with docker
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  dockerbuild:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with: 
+          submodules: recursive
+          fetch-depth: 0
+      - name: Install transmission-cli
+        run: |
+          sudo apt-get install -y transmission-cli
+
+      - name: Run remote profile
+        run: |
+          docker compose --profile remote up
+          # todo: install transmission-show (cli?) to print hash / compare local and remote
+          MAGNET_LINK=$(transmission-show -m ./watch/*)
+          echo "MAGNET_LINK_REMOTE=$MAGNET_LINK" >> $GITHUB_ENV
+          sudo rm ./watch/*
+
+      - name: Move downloads to cdn
+        run: |
+          mkdir -p ./cdn
+          sudo mv ./downloads/* ./cdn/
+
+      - name: Run local profile
+        run: |
+          docker compose --profile local up
+          MAGNET_LINK=$(transmission-show -m ./watch/*)
+          echo "MAGNET_LINK_LOCAL=$MAGNET_LINK" >> $GITHUB_ENV
+
+
+      - name: Compare hashes and write summary
+        run: |
+          if [ "$MAGNET_LINK_REMOTE" = "$MAGNET_LINK_LOCAL" ]; then
+            echo "- Magnet links match:    " >> $GITHUB_STEP_SUMMARY
+            echo ">$MAGNET_LINK_LOCAL" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- Magnet links differ" >> $GITHUB_STEP_SUMMARY
+            echo "Remote: $MAGNET_LINK_REMOTE" >> $GITHUB_STEP_SUMMARY
+            echo "Local:  $MAGNET_LINK_LOCAL" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+      - name: create release notes
+        run: |
+          {
+            echo "### Torrent info"
+            echo '```'
+            transmission-show watch/*
+            echo '```'
+            echo "### 🧲 Link"
+            echo '```'
+            transmission-show -m watch/*
+            echo '```'
+          } >> release-notes.md
+
+      - name: Add release notes to step summary
+        run: |
+          cat release-notes.md >> $GITHUB_STEP_SUMMARY
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          body_path: release-notes.md
+          files: watch/*

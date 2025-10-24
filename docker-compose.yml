@@ -1,0 +1,31 @@
+services:
+  monero-torrent-remote:
+    build: .
+    image: monero-torrent
+    environment:
+      CDN_URL: "https://dlsrc.getmonero.org"
+      HASHES_URL: "https://www.getmonero.org/downloads/hashes.txt"
+      BF_KEY_URL: "https://raw.githubusercontent.com/monero-project/monero/master/utils/gpg_keys/binaryfate.asc"
+      OUTPUT_DIR: "/app/downloads"
+      TORRENT_DIR: "/app/watch"
+    volumes:
+      - "./downloads:/app/downloads"
+      - "./watch:/app/watch"
+    restart: "no"
+    profiles: ["remote"]
+
+  monero-torrent-local:
+    build: .
+    image: monero-torrent-local
+    environment:
+      CDN_URL: "/cdn"
+      HASHES_URL: "hashes-v0.18.4.3.txt"
+      BF_KEY_URL: "binaryfate.asc"
+      OUTPUT_DIR: "/app/downloads"
+      TORRENT_DIR: "/app/watch"
+    volumes:
+      - "./downloads:/app/downloads"
+      - "./watch:/app/watch"
+      - "./cdn:/cdn"
+    restart: "no"
+    profiles: ["local"]

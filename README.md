@@ -42,17 +42,53 @@ the shell script outputs this:
 Grab the torrent from https://github.com/plowsof/monero-torrent/releases
 
 To build the torrent file:
+
 - Clone this repo, build and copy the mktorrent binary to the `monero-torrent` dir and run `create_monero_torrent.sh`:
 ```
 git clone --recurse-submodules https://github.com/plowsof/monero-torrent && cd monero-torrent && cd submodules/mktorrent && make && mv mktorrent ../../ && cd ../.. && chmod +x create_monero_torrent.sh && ./create_monero_torrent.sh
 ```
 
 - By default the script downloads binaries from getmoneros CDN
-- you can specify the local path of `binaryfate.asc` , `hashes.txt` and the CDN base dir which contains the latest monero binaries. _Note: they do not have to be nested in any particular folder, the script will find them recursively and copy them into the torrents file folder_
+- to obtain files locally, pass `CDN_URL` which is a path containing all files required including `binaryfate.asc` and `hashes.txt`
+- `BF_KEY_URL` is the filename of the key inside the `CDN_URL` folder.
+- `HASHES_URL` is the filename of the hashes file in `CDN_URL` folder. (to support a versioned hashes-v*.txt)
+
+_Note: they do not have to be nested in any particular folder, the script will find them recursively and copy them into the torrents file folder_
 
 ```
 CDN_URL="$HOME/monero-v0.18.4.3" \
-BF_KEY_URL="$HOME/binaryfate.asc" \
-HASHES_URL="$HOME/hashes.txt" \
+BF_KEY_URL="binaryfate.asc" \
+HASHES_URL="hashes.txt" \
 ./create_monero_torrent.sh
+```
+
+# docker
+
+if you see `ContainerConfig` error you need to upgrade docker-compose. In debian:
+
+``
+sudo apt-get remove docker-compose
+sudo apt-get install docker-compose-plugin
+``
+
+env variables are defined in docker-compose.yml
+
+Default where files are downloaded:
+
+```
+docker compose --profile remote up
+```
+
+```
+docker compose --profile local up
+```
+
+# seeding
+
+this is left up to the user, but after running the scripts you can add the torrent / files to your favourite client. _Note: ensure the correct port(s) are open for your client_
+
+example with `transmission-daemon`:
+
+```
+transmission-daemon --config-dir ./config --download-dir ./downloads --watch-dir ./watch --foreground
 ```
