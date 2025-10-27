@@ -92,3 +92,13 @@ example with `transmission-daemon`:
 ```
 transmission-daemon --config-dir ./config --download-dir ./downloads --watch-dir ./watch --foreground
 ```
+
+for some automation linux/debian users can install inotifywait which can watch a directory for new files.
+when i push a torrent file to the `watch` folder - a script to remove the old torrent files is run.
+the webseed will be used to bootstrap the first seed node, simple.
+
+```
+apt install inotify-tools
+```
+
+running `./inotify.sh` in a screen session will delete old torrent files when a new Monero torrent is placed in the `./watch` folder.
