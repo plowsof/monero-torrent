@@ -4,10 +4,8 @@ on:
   push:
   workflow_dispatch:
 
-env:
-  IMAGE_NAME: ghcr.io/${{ github.repository }}/monero-torrent:latest
-
 # https://github.com/dorny/paths-filter?tab=readme-ov-file#example
+# https://github.com/vtnerd/monero-lws/blob/master/.github/workflows/docker-build.yml
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -31,11 +29,11 @@ jobs:
               - 'submodules/mktorrent/**'
               - 'create_monero_torrent.sh'
 
-      - if: steps.changes.outputs.src == 'true'
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          install: true
+      #- if: steps.changes.outputs.src == 'true'
+      #  name: Set up Docker Buildx
+      #  uses: docker/setup-buildx-action@v3
+      # with:
+      #    install: true
 
       - if: steps.changes.outputs.src == 'true'
         name: ghcr login
@@ -46,15 +44,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - if: steps.changes.outputs.src == 'true'
-        name: Build and push Docker image
-        uses: docker/build-push-action@v6
-        with:
-          push: true
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          tags: |
-            ${{ env.IMAGE_NAME }}
-            ghcr.io/${{ github.repository }}/monero-torrent:${{ github.ref_name }}
+        name: Push to GitHub Container Registry
+        run: docker push -a ghcr.io/plowsof/monero-torrent
 
   dockerbuild:
     runs-on: ubuntu-latest
