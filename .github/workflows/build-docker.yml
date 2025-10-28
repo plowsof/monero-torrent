@@ -66,6 +66,13 @@ jobs:
         run: |
           sudo apt-get install -y transmission-cli
 
+      - name: ghcr login
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Run remote profile
         run: |
           docker compose --profile remote up
