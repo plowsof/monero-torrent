@@ -79,6 +79,8 @@ Default where files are downloaded:
 docker compose --profile remote up --build
 ```
 
+see usage above and docker-compose.yml to use local files:
+
 ```
 docker compose --profile local up --build
 ```
