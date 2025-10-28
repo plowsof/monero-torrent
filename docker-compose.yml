@@ -1,6 +1,5 @@
 services:
   monero-torrent-remote:
-    build: .
     image: ghcr.io/plowsof/monero-torrent/monero-torrent:latest
     environment:
       CDN_URL: "https://dlsrc.getmonero.org"
@@ -15,7 +14,6 @@ services:
     profiles: ["remote"]
 
   monero-torrent-local:
-    build: .
     image: ghcr.io/plowsof/monero-torrent/monero-torrent:latest
     environment:
       CDN_URL: "/cdn"
