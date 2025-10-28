@@ -76,11 +76,11 @@ env variables are defined in docker-compose.yml
 Default where files are downloaded:
 
 ```
-docker compose --profile remote up
+docker compose --profile remote up --build
 ```
 
 ```
-docker compose --profile local up
+docker compose --profile local up --build
 ```
 
 # seeding

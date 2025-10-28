@@ -1,6 +1,8 @@
 services:
   monero-torrent-remote:
     image: ghcr.io/plowsof/monero-torrent-build-env:latest
+    build:
+      context: .
     environment:
       CDN_URL: "https://dlsrc.getmonero.org"
       HASHES_URL: "https://www.getmonero.org/downloads/hashes.txt"
@@ -15,6 +17,8 @@ services:
 
   monero-torrent-local:
     image: ghcr.io/plowsof/monero-torrent-build-env:latest
+    build:
+      context: .
     environment:
       CDN_URL: "/cdn"
       HASHES_URL: "hashes-v0.18.4.3.txt"
