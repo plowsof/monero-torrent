@@ -44,6 +44,10 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - if: steps.changes.outputs.src == 'true'
+        name: Build image
+        run: docker build --no-cache --tag plowsof/monero-torrent:latest .
+
+      - if: steps.changes.outputs.src == 'true'
         name: Push to GitHub Container Registry
         run: docker push -a ghcr.io/plowsof/monero-torrent
 
