@@ -73,7 +73,7 @@ sudo apt-get install docker-compose-plugin
 
 env variables are defined in docker-compose.yml
 
-Default where files are downloaded:
+Default where files are downloaded: _(`--build` forces building the container, rather than pulling it from this repo)_
 
 ```
 docker compose --profile remote up --build
