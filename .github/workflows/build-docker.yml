@@ -8,6 +8,8 @@ on:
 # https://github.com/vtnerd/monero-lws/blob/master/.github/workflows/docker-build.yml
 jobs:
   build-and-push:
+    outputs:
+      src_changed: ${{ steps.changes.outputs.src }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -91,7 +93,13 @@ jobs:
 
       - name: Run remote profile
         run: |
-          docker compose --profile remote up
+          if [ "${{ needs.build-and-push.outputs.src_changed }}" = "true" ]; then
+            # force rebuild instead of pulling container.
+            # the local step will use this container.
+            docker compose --profile remote up --build
+          else
+            docker compose --profile remote up
+          fi
           # todo: install transmission-show (cli?) to print hash / compare local and remote
           MAGNET_LINK=$(transmission-show -m ./watch/*)
           echo "MAGNET_LINK_REMOTE=$MAGNET_LINK" >> $GITHUB_ENV

@@ -19,3 +19,5 @@ COPY create_monero_torrent.sh /app/
 RUN chmod +x /app/create_monero_torrent.sh
 
 ENTRYPOINT ["/app/create_monero_torrent.sh"]
+
+# test rebuild
