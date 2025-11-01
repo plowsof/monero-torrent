@@ -10,8 +10,9 @@ jobs:
   dockerbuild:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
+      discussions: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -120,3 +121,16 @@ jobs:
         with:
           body_path: release-notes.md
           files: watch/*
+
+      - name: Add to RSS feed
+        if: github.ref_type == 'tag' && github.ref == 'refs/heads/main'
+        run: |
+          # variables should be set already
+          ./rss/add_to_rss.sh
+          git config --local user.email "torrent@users.noreply.github.com"
+          git config --local user.name "updateRSS"
+          git add ./rss/torrent-rss.xml
+          git commit -m "RSS: add $VERSION"
+          git push origin HEAD:main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
