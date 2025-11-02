@@ -41,6 +41,7 @@ jobs:
           curl -sL $HASHES_URL -o hashes.txt
           version=$(awk '/monero-source-v/ {print $2}' "hashes.txt" | awk -F".tar.bz2" '{print $1}' | awk -F"-" '{print $3}') 
           echo "version=$version" >> $GITHUB_OUTPUT
+          echo "VERSION=$version" >> $GITHUB_ENV
 
       - uses: actions/cache@v4
         id: binaries_cache
@@ -123,14 +124,15 @@ jobs:
           files: watch/*
 
       - name: Add to RSS feed
-        if: github.ref_type == 'tag' && github.ref == 'refs/heads/main'
+        if: github.ref_type == 'tag'
         run: |
-          # variables should be set already
-          ./rss/add_to_rss.sh
           git config --local user.email "torrent@users.noreply.github.com"
           git config --local user.name "updateRSS"
+          git fetch origin main
+          git checkout main
+          git rebase origin/main
+          git checkout -b update-rss-${VERSION}
+          ./rss/add_to_rss.sh
           git add ./rss/torrent-rss.xml
           git commit -m "RSS: add $VERSION"
-          git push origin HEAD:main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git push origin HEAD:update-rss-${VERSION} --force
