@@ -4,7 +4,7 @@ services:
     build:
       context: .
     environment:
-      CDN_URL: "https://dlsrc.getmonero.org"
+      CDN_URL: "https://downloads.getmonero.org"
       HASHES_URL: "https://www.getmonero.org/downloads/hashes.txt"
       BF_KEY_URL: "https://raw.githubusercontent.com/monero-project/monero/master/utils/gpg_keys/binaryfate.asc"
       OUTPUT_DIR: "/app/downloads"

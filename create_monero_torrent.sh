@@ -8,7 +8,8 @@ set -o pipefail
 #└── gui
 #    ├── monero-gui-files
 #CDN_URL local no nesting required, just place all files in the folder.
-CDN_URL="${CDN_URL:-https://dlsrc.getmonero.org}"
+DEFAULT_CDN_URL="https://downloads.getmonero.org"
+CDN_URL="${CDN_URL:-$DEFAULT_CDN_URL}"
 OUTPUT_DIR="${OUTPUT_DIR:-downloads}"
 TORRENT_DIR="${TORRENT_DIR:-watch}"
 HASHES_URL="${HASHES_URL:-https://www.getmonero.org/downloads/hashes.txt}"
@@ -107,4 +108,4 @@ done
 
 cd ../..
 
-./mktorrent -l $PIECE_SIZE -o "$TORRENT_DIR/$torrent.torrent" -n $torrent -c "$torrent_comment" -w "https://dlsrc.getmonero.org/" -v $OUTPUT_DIR/$torrent
+./mktorrent -l $PIECE_SIZE -o "$TORRENT_DIR/$torrent.torrent" -n $torrent -c "$torrent_comment" -w "$DEFAULT_CDN_URL" -v $OUTPUT_DIR/$torrent
