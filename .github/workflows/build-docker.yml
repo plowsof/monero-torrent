@@ -68,6 +68,9 @@ jobs:
           fi
           MAGNET_LINK=$(transmission-show -m ./watch/*)
           echo "MAGNET_LINK_REMOTE=$MAGNET_LINK" >> $GITHUB_ENV
+          INFOHASH="${MAGNET_LINK#*btih:}"
+          INFOHASH="${INFOHASH%%&*}"
+          echo "INFOHASH=$INFOHASH" >> $GITHUB_ENV
           sudo rm ./watch/*
 
       - name: Push new image to ghcr
