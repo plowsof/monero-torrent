@@ -58,7 +58,7 @@ jobs:
 
       - name: Run remote profile
         run: |
-          if [ "${{ steps.changes.outputs.src }}" = "true" ]; then
+          if [ "${{ steps.changes.outputs.src }}" = "true" ] || [ "${{ github.ref_type }}" = "tag" ]; then
             # force rebuild instead of pulling container.
             # the local step will use this container.
             docker compose --profile remote up --build
