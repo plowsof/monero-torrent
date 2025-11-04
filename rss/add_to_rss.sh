@@ -7,10 +7,16 @@ TMP_FILE="./rss/torrent-rss.new.xml"
 MAGNET_LINK="${MAGNET_LINK_LOCAL:-magnet:?xt=test123&123}"
 # escape &
 MAGNET_LINK="${MAGNET_LINK//&/&amp;}"
+MAGNET_LINK_GUI="${MAGNET_LINK_LOCAL_GUI:-magnet:?xt=test123&123}"
+MAGNET_LINK_GUI="${MAGNET_LINK_GUI//&/&amp;}"
 VERSION="${VERSION:-v0.18.0.0}"
+VERSION_GUI="${VERSION:-v0.18.0.1}"
 TITLE="Monero $VERSION"
+TITLE_GUI="Monero GUI $VERSION_GUI"
 PUBDATE="$(date -R)"
 INFOHASH="${INFOHASH:-123abc123abc}"
+INFOHASH_GUI="${INFOHASH_GUI:-123abc123abc}"
+
 
 NEW_ITEM=$(cat <<EOF
   <item>
@@ -18,7 +24,14 @@ NEW_ITEM=$(cat <<EOF
     <link>$MAGNET_LINK</link>
     <guid isPermaLink="false">$INFOHASH</guid>
     <pubDate>$PUBDATE</pubDate>
-    <description>Multi file torrent for Monero GUI/CLI $VERSION</description>
+    <description>Multi file torrent for Monero $VERSION</description>
+  </item>
+  <item>
+    <title>$TITLE_GUI</title>
+    <link>$MAGNET_LINK_GUI</link>
+    <guid isPermaLink="false">$INFOHASH_GUI</guid>
+    <pubDate>$PUBDATE</pubDate>
+    <description>Multi file torrent for Monero GUI $VERSION_GUI</description>
   </item>
 EOF
 )

@@ -1,12 +1,5 @@
 <?xml version="1.0"?>
 <rss version="2.0">
   <channel>
-  <item>
-    <title>Monero v0.18.4.3</title>
-    <link>magnet:?xt=urn:btih:ef7f2d08155f56e7fa41ea6f52638ade381aad34&amp;dn=monero-v0.18.4.3&amp;ws=https%3A%2F%2Fdownloads.getmonero.org</link>
-    <guid isPermaLink="false">123abc123abc</guid>
-    <pubDate>Mon, 03 Nov 2025 11:35:03 +0000</pubDate>
-    <description>Multi file torrent for Monero GUI/CLI v0.18.4.3</description>
-  </item>
   </channel>
 </rss>
