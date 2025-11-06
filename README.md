@@ -1,17 +1,17 @@
 # monero-torrent
 
-create a torrent of all monero release binaries with a deterministic file info hash. seeding this is left up to the user currently
+create torrents for Monero GUI / CLI files.
 
-- a multi file torrent with getmonero added as a [webseed](https://fosstorrents.com/blog/torrents-with-web-seeds/)
+- getmonero.org added as a [webseed](https://fosstorrents.com/blog/torrents-with-web-seeds/)
 - [mktorrent](https://github.com/pobrn/mktorrent) creates the torrent file.
 - the torrent files [info-hash](https://stackoverflow.com/a/28601408) is deterministic.
+- automated ci
 
-the shell script outputs this:
+`create_monero_torrent.sh` creates:
 ```
 ├── create_monero_torrent.sh
 ├── downloads
 │   └── monero-v0.18.4.2
-│       ├── binaryfate.asc
 │       ├── cli
 │       │   ├── monero-android-armv7-v0.18.4.2.tar.bz2
 │       │   ├── monero-android-armv8-v0.18.4.2.tar.bz2
@@ -26,6 +26,8 @@ the shell script outputs this:
 │       │   ├── monero-source-v0.18.4.2.tar.bz2
 │       │   ├── monero-win-x64-v0.18.4.2.zip
 │       │   └── monero-win-x86-v0.18.4.2.zip
+│       └── hashes-v0.18.4.2.txt
+│   └── monero-gui-v0.18.4.2
 │       ├── gui
 │       │   ├── monero-gui-install-win-x64-v0.18.4.2.exe
 │       │   ├── monero-gui-linux-x64-v0.18.4.2.tar.bz2
@@ -35,7 +37,9 @@ the shell script outputs this:
 │       │   └── monero-gui-win-x64-v0.18.4.2.zip
 │       └── hashes-v0.18.4.2.txt
 └── watch
-    └── monero-v0.18.4.2.torrent
+    ├── monero-v0.18.4.2.torrent
+    └── monero-gui-v0.18.4.2.torrent
+
 ```
 # usage
 
@@ -51,7 +55,7 @@ git clone --recurse-submodules https://github.com/plowsof/monero-torrent && cd m
 - By default the script downloads binaries from getmoneros CDN
 - to obtain files locally, pass `CDN_URL` which is a path containing all files required including `binaryfate.asc` and `hashes.txt`
 - `BF_KEY_URL` is the filename of the key inside the `CDN_URL` folder.
-- `HASHES_URL` is the filename of the hashes file in `CDN_URL` folder. (to support a versioned hashes-v*.txt)
+- `HASHES_URL` is the filename of the hashes file in `CDN_URL` folder. (to support a versioned hashes-v*.txt) _*if GUI/CLI versions differ - you must provide the versioned hashes file for each_
 
 _Note: they do not have to be nested in any particular folder, the script will find them recursively and copy them into the torrents file folder_
 
