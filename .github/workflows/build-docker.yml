@@ -56,6 +56,14 @@ jobs:
           VERSION: $VERSION
           VERSION_GUI: $VERSION_GUI
 
+      - name: Check if version has already been tagged
+        if: github.ref_type == 'tag'
+        run: |
+          if git ls-remote --tags origin | grep "refs/tags/${VERSION}$"; then
+            echo "tag $VERSION found"
+            exit 1
+          fi
+
       # note: its possible gui + cli have different versions. combine them for the key.
       - uses: actions/cache@v4
         id: binaries_cache
