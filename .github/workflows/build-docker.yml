@@ -100,10 +100,6 @@ jobs:
           echo "INFOHASH_GUI=$INFOHASH_GUI" >> $GITHUB_ENV
           sudo rm ./watch/*
 
-      - name: Push new image to ghcr
-        if:  github.ref_type == 'tag' || ( steps.changes.outputs.src == 'true' && github.ref == 'refs/heads/main' )
-        run: docker push -a ghcr.io/plowsof/monero-torrent-build-env
-
       - name: Move downloads to cdn
         run: |
           mkdir -p ./cdn
@@ -116,6 +112,10 @@ jobs:
           MAGNET_LINK_GUI=$(docker run --rm -v "./watch:/watch" ghcr.io/plowsof/monero-torrent-show:latest -m /watch/monero-gui-$VERSION_GUI.torrent)
           echo "MAGNET_LINK_LOCAL=$MAGNET_LINK" >> $GITHUB_ENV
           echo "MAGNET_LINK_LOCAL_GUI=$MAGNET_LINK_GUI" >> $GITHUB_ENV
+
+      - name: Push new image to ghcr
+        if:  github.ref_type == 'tag' || ( steps.changes.outputs.src == 'true' && github.ref == 'refs/heads/main' )
+        run: docker push -a ghcr.io/plowsof/monero-torrent-build-env
 
       - if: ${{ steps.binaries_cache.outputs.cache-hit != 'true' }}
         name: Compare hashes for local/remote build and write summary
