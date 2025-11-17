@@ -31,17 +31,28 @@ jobs:
               - 'Dockerfile'
               - 'submodules/mktorrent/**'
               - 'create_monero_torrent.sh'
+            transmission:
+              - '.github/workflows/docker/Dockerfile.transmission'
+
+      - name: ghcr login
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: transmission-show (pull or build)
         run: |
           tag_name="ghcr.io/plowsof/monero-torrent-show:latest"
-          if ! docker pull $tag_name; then
-            echo "DEBUG: not found, building"
-            docker build -f ./.github/docker/Dockerfile.transmission -t $tag_name .
-            docker push -a ghcr.io/plowsof/monero-torrent-show
-          else
-            echo "DEBUG: PULLED"
-          fi
+          case "${{ steps.changes.outputs.transmission }}" in
+            true)
+              docker build -f ./.github/workflows/docker/Dockerfile.transmission -t $tag_name .
+              docker push -a ghcr.io/plowsof/monero-torrent-show
+              ;;
+            *)
+              docker pull "$tag_name" || docker build -t "$tag_name" .
+              ;;
+          esac
 
       - name: get version from hashes.txt
         id: hashes_version
@@ -70,13 +81,6 @@ jobs:
         with:
           path: ./downloads
           key: monero-binaries-${{ env.VERSION }}-gui-${{ env.VERSION_GUI }}
-
-      - name: ghcr login
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
 
       - if: ${{ steps.binaries_cache.outputs.cache-hit != 'true' }}
         name: Run remote profile
