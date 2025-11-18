@@ -75,29 +75,16 @@ mkdir -p "$OUTPUT_DIR/$cli_torrent"
 mkdir -p "$OUTPUT_DIR/$gui_torrent"
 
 for x in cli gui; do
-    ver="$cli_version"
-    folder="$cli_torrent"
-    if [ "$x" = "gui" ]; then
-        ver="$gui_version"
-        folder="$gui_torrent"
-    fi
-
-    hash_file="hashes-$ver.txt"
-    dest="$OUTPUT_DIR/$folder/$hash_file"
-
-    if is_url "$CDN_URL"; then
-        url="$CDN_URL/$hash_file"
-        curl -sSfL "$url" -o "$dest"
-    else
-        # requires versioned hashes file in CDN path. 2 if gui/cli are on different versions
-        src_file=$(find "$CDN_URL" -type f -name "$hash_file" -print -quit)
-        if [ "$src_file" ]; then
-            cp "$src_file" "$dest"
-        else
-            echo "Error: $hash_file not found in $CDN_URL"
-            exit 1
-        fi
-    fi
+  # build strings
+  ver_var="${x}_version"
+  folder_var="${x}_torrent"
+  # get value of those strings as variables
+  # https://stackoverflow.com/a/8515492
+  ver="${!ver_var}"
+  folder="${!folder_var}"
+  hash_file="hashes-$ver.txt"
+  dest="$OUTPUT_DIR/$folder/$hash_file"
+  cp $OUTPUT_DIR/hashes.txt "$dest"
 done
 
 for file in $(awk '/monero-/ {print $2}' "$OUTPUT_DIR/hashes.txt"); do
