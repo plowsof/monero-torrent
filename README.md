@@ -55,7 +55,7 @@ git clone --recurse-submodules https://github.com/plowsof/monero-torrent && cd m
 - By default the script downloads binaries from getmoneros CDN
 - to obtain files locally, pass `CDN_URL` which is a path containing all files required including `binaryfate.asc` and `hashes.txt`
 - `BF_KEY_URL` is the filename of the key inside the `CDN_URL` folder.
-- `HASHES_URL` is the filename of the hashes file in `CDN_URL` folder. (to support a versioned hashes-v*.txt) _*if GUI/CLI versions differ - you must provide the versioned hashes file for each_
+- `HASHES_URL` is the filename of the hashes file in `CDN_URL` folder.
 
 _Note: they do not have to be nested in any particular folder, the script will find them recursively and copy them into the torrents file folder_
 
