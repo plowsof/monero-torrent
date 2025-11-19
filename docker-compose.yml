@@ -21,7 +21,7 @@ services:
       context: .
     environment:
       CDN_URL: "/cdn"
-      HASHES_URL: "hashes-v0.18.4.3.txt"
+      HASHES_URL: "hashes.txt"
       BF_KEY_URL: "binaryfate.asc"
       OUTPUT_DIR: "/app/downloads"
       TORRENT_DIR: "/app/watch"
