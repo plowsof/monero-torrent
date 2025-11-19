@@ -29,31 +29,24 @@ is_url() {
 }
 
 # reinvent the wheel and download/verify binaries
-if is_url "$HASHES_URL"; then
-  curl -sSfL $HASHES_URL -o "$OUTPUT_DIR/hashes.txt"
-else
-  # recursively find a file https://stackoverflow.com/a/656744
-  src_file=$(find "$CDN_URL" -type f -name "$HASHES_URL" -print -quit)
-  if [ "$src_file" ]; then
-    cp "$src_file" "$OUTPUT_DIR/hashes.txt"
+for tuple in "$HASHES_URL:hashes.txt" "$BF_KEY_URL:binaryfate.asc"; do
+  # https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
+  # instead of splitting using delimiter, use paramater expansion to get before/after the ":"
+  url="${tuple%%:*}"
+  filename="${tuple#*:}"
+  if is_url "$url"; then
+    curl -sSfL $url -o "$OUTPUT_DIR/$filename"
   else
-    echo "$file not found in $CDN_URL"
-    exit 1
+    # recursively find a file https://stackoverflow.com/a/656744
+    src_file=$(find "$CDN_URL" -type f -name "$url" -print -quit)
+    if [ "$src_file" ]; then
+      cp "$src_file" "$OUTPUT_DIR/$filaname"
+    else
+      echo "$file not found in $CDN_URL"
+      exit 1
+    fi
   fi
-fi
-
-if is_url "$BF_KEY_URL"; then
-  curl -sSfL $BF_KEY_URL -o "$OUTPUT_DIR/binaryfate.asc"
-else
-  # recursively find a file https://stackoverflow.com/a/656744
-  src_file=$(find "$CDN_URL" -type f -name "$BF_KEY_URL" -print -quit)
-  if [ "$src_file" ]; then
-    cp "$src_file" "$OUTPUT_DIR/binaryfate.asc"
-  else
-    echo "$file not found in $CDN_URL"
-    exit 1
-  fi
-fi
+done
 
 gpg --import "$OUTPUT_DIR/binaryfate.asc"
 gpg --verify "$OUTPUT_DIR/hashes.txt"
