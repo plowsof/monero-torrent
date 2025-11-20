@@ -4,6 +4,11 @@ set -euo pipefail
 RSS_FILE="./rss/torrent-rss.xml"
 TMP_FILE="./rss/torrent-rss.new.xml"
 
+echo "infohash=$INFOHASH"
+echo "infohash_gui=$INFOHASH_GUI"
+echo "TORRENT_URL=$TORRENT_URL"
+echo "TORRENT_URL_GUI=$TORRENT_URL_GUI"
+
 MAGNET_LINK="${MAGNET_LINK_LOCAL:-magnet:?xt=test123&123}"
 # escape &
 MAGNET_LINK="${MAGNET_LINK//&/&amp;}"
