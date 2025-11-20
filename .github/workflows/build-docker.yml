@@ -106,6 +106,17 @@ jobs:
           echo "MAGNET_LINK_LOCAL=$MAGNET_LINK" >> $GITHUB_ENV
           echo "MAGNET_LINK_LOCAL_GUI=$MAGNET_LINK_GUI" >> $GITHUB_ENV
 
+          INFOHASH="${MAGNET_LINK_LOCAL#*btih:}"
+          INFOHASH="${INFOHASH%%&*}"
+          INFOHASH_GUI="${MAGNET_LINK_LOCAL_GUI#*btih:}"
+          INFOHASH_GUI="${INFOHASH_GUI%%&*}"
+          TORRENT_URL="https://github.com/plowsof/monero-torrent/releases/download/${GITHUB_REF_NAME}/monero-${VERSION}.torrent"
+          TORRENT_URL_GUI="https://github.com/plowsof/monero-torrent/releases/download/${GITHUB_REF_NAME}/monero-gui-${VERSION_GUI}.torrent"
+          echo "INFOHASH=$INFOHASH" >> $GITHUB_ENV
+          echo "INFOHASH_GUI=$INFOHASH_GUI" >> $GITHUB_ENV
+          echo "TORRENT_URL=$TORRENT_URL" >> $GITHUB_ENV
+          echo "TORRENT_URL_GUI=$TORRENT_URL_GUI" >> $GITHUB_ENV
+
       - name: Push new image to ghcr
         if:  github.ref_type == 'tag' || ( steps.changes.outputs.src == 'true' && github.ref == 'refs/heads/main' )
         run: docker push -a ghcr.io/plowsof/monero-torrent-build-env
@@ -166,20 +177,6 @@ jobs:
           git fetch origin "${GITHUB_REF_NAME}"
           git checkout "${GITHUB_REF_NAME}"
           git checkout -b update-rss-${VERSION}
-          INFOHASH="${MAGNET_LINK_LOCAL#*btih:}"
-          INFOHASH="${INFOHASH%%&*}"
-          INFOHASH_GUI="${MAGNET_LINK_LOCAL_GUI#*btih:}"
-          INFOHASH_GUI="${INFOHASH_GUI%%&*}"
-          TORRENT_URL="https://github.com/plowsof/monero-torrent/releases/download/${GITHUB_REF_NAME}/monero-${VERSION}.torrent"
-          TORRENT_URL_GUI="https://github.com/plowsof/monero-torrent/releases/download/${GITHUB_REF_NAME}/monero-gui-${VERSION_GUI}.torrent"
-          echo "infohash = $INFOHASH"
-          echo "infohash_gui = $INFOHASH_GUI"
-          echo "TORRENT_URL = $TORRENT_URL"
-          echo "TORRENT_URL_GUI = $TORRENT_URL_GUI"
-          echo "INFOHASH=$INFOHASH" >> $GITHUB_ENV
-          echo "INFOHASH_GUI=$INFOHASH_GUI" >> $GITHUB_ENV
-          echo "TORRENT_URL=$TORRENT_URL" >> $GITHUB_ENV
-          echo "TORRENT_URL_GUI=$TORRENT_URL_GUI" >> $GITHUB_ENV
           ./rss/add_to_rss.sh
           git add ./rss/torrent-rss.xml
           git commit -m "RSS: add $VERSION"
