@@ -170,6 +170,8 @@ jobs:
           INFOHASH="${INFOHASH%%&*}"
           INFOHASH_GUI="${MAGNET_LINK_LOCAL_GUI#*btih:}"
           INFOHASH_GUI="${INFOHASH_GUI%%&*}"
+          TORRENT_URL="https://github.com/plowsof/monero-torrent/releases/download/${GITHUB_REF_NAME}/monero-${VERSION}.torrent"
+          TORRENT_URL_GUI="https://github.com/plowsof/monero-torrent/releases/download/${GITHUB_REF_NAME}/monero-gui-${VERSION_GUI}.torrent"
           ./rss/add_to_rss.sh
           git add ./rss/torrent-rss.xml
           git commit -m "RSS: add $VERSION"

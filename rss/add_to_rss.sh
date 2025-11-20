@@ -16,19 +16,20 @@ TITLE_GUI="Monero GUI $VERSION_GUI"
 PUBDATE="$(date -R)"
 INFOHASH="${INFOHASH:-123abc123abc}"
 INFOHASH_GUI="${INFOHASH_GUI:-123abc123abc}"
-
+TORRENT_URL="${TORRENT_URL:-default_cli_url}"
+TORRENT_URL_GUI="${TORRENT_URL_GUI:-default_gui_url}"
 
 NEW_ITEM=$(cat <<EOF
   <item>
     <title>$TITLE</title>
-    <link>$MAGNET_LINK</link>
+    <link>$TORRENT_URL</link>
     <guid isPermaLink="false">$INFOHASH</guid>
     <pubDate>$PUBDATE</pubDate>
     <description>Multi file torrent for Monero $VERSION</description>
   </item>
   <item>
     <title>$TITLE_GUI</title>
-    <link>$MAGNET_LINK_GUI</link>
+    <link>$TORRENT_URL_GUI</link>
     <guid isPermaLink="false">$INFOHASH_GUI</guid>
     <pubDate>$PUBDATE</pubDate>
     <description>Multi file torrent for Monero GUI $VERSION_GUI</description>
