@@ -50,7 +50,7 @@ jobs:
               docker push -a ghcr.io/plowsof/monero-torrent-show
               ;;
             *)
-              docker pull "$tag_name" || docker build -t "$tag_name" .
+              docker pull "$tag_name" || docker build -f ./.github/workflows/docker/Dockerfile.transmission -t "$tag_name" .
               ;;
           esac
 
