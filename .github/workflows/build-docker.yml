@@ -172,6 +172,10 @@ jobs:
           INFOHASH_GUI="${INFOHASH_GUI%%&*}"
           TORRENT_URL="https://github.com/plowsof/monero-torrent/releases/download/${GITHUB_REF_NAME}/monero-${VERSION}.torrent"
           TORRENT_URL_GUI="https://github.com/plowsof/monero-torrent/releases/download/${GITHUB_REF_NAME}/monero-gui-${VERSION_GUI}.torrent"
+          echo "infohash = $INFOHASH"
+          echo "infohash_gui = $INFOHASH_GUI"
+          echo "TORRENT_URL = $TORRENT_URL"
+          echo "TORRENT_URL_GUI = $TORRENT_URL_GUI"
           echo "INFOHASH=$INFOHASH" >> $GITHUB_ENV
           echo "INFOHASH_GUI=$INFOHASH_GUI" >> $GITHUB_ENV
           echo "TORRENT_URL=$TORRENT_URL" >> $GITHUB_ENV
