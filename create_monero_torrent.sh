@@ -8,7 +8,7 @@ set -o pipefail
 #└── gui
 #    ├── monero-gui-files
 #CDN_URL local no nesting required, just place all files in the folder.
-DEFAULT_CDN_URL="https://downloads.getmonero.org/"
+DEFAULT_CDN_URL="https://downloads.getmonero.org"
 CDN_URL="${CDN_URL:-$DEFAULT_CDN_URL}"
 OUTPUT_DIR="${OUTPUT_DIR:-downloads}"
 TORRENT_DIR="${TORRENT_DIR:-watch}"
