@@ -9,7 +9,7 @@ on:
 # https://github.com/vtnerd/monero-lws/blob/master/.github/workflows/docker-build.yml
 jobs:
   dockerbuild:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: write
       packages: write
