@@ -12,6 +12,7 @@ services:
     volumes:
       - "./downloads:/app/downloads"
       - "./watch:/app/watch"
+      - "./create_monero_torrent.sh:/app/create_monero_torrent.sh"
     restart: "no"
     profiles: ["remote"]
 
@@ -29,5 +30,6 @@ services:
       - "./downloads:/app/downloads"
       - "./watch:/app/watch"
       - "./cdn:/cdn"
+      - "./create_monero_torrent.sh:/app/create_monero_torrent.sh"
     restart: "no"
     profiles: ["local"]
