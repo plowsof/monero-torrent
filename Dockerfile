@@ -14,4 +14,4 @@ COPY submodules/mktorrent /app/submodules/mktorrent
 # script expects mktorrent binary in same dir
 RUN cd /app/submodules/mktorrent && make && mv mktorrent /app/
 
-ENTRYPOINT ["sh", "/app/create_monero_torrent.sh"]
+ENTRYPOINT ["bash", "/app/create_monero_torrent.sh"]
