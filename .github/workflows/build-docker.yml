@@ -83,8 +83,8 @@ jobs:
           else
             docker compose --profile remote up
           fi
-          MAGNET_LINK=$(docker run --rm -v "./watch:/watch" ghcr.io/plowsof/monero-torrent-show:latest -m /watch/monero-$VERSION.torrent)
-          MAGNET_LINK_GUI=$(docker run --rm -v "./watch:/watch" ghcr.io/plowsof/monero-torrent-show:latest -m /watch/monero-gui-$VERSION_GUI.torrent)
+          MAGNET_LINK=$(docker run --rm -v "./watch:/watch:ro" ghcr.io/plowsof/monero-torrent-show:latest -m /watch/monero-$VERSION.torrent)
+          MAGNET_LINK_GUI=$(docker run --rm -v "./watch:/watch:ro" ghcr.io/plowsof/monero-torrent-show:latest -m /watch/monero-gui-$VERSION_GUI.torrent)
           echo "MAGNET_LINK_REMOTE=$MAGNET_LINK" >> $GITHUB_ENV
           echo "MAGNET_LINK_REMOTE_GUI=$MAGNET_LINK_GUI" >> $GITHUB_ENV
           sudo rm ./watch/*
@@ -101,8 +101,8 @@ jobs:
           else
             docker compose --profile local up
           fi
-          MAGNET_LINK=$(docker run --rm -v "./watch:/watch" ghcr.io/plowsof/monero-torrent-show:latest -m /watch/monero-$VERSION.torrent)
-          MAGNET_LINK_GUI=$(docker run --rm -v "./watch:/watch" ghcr.io/plowsof/monero-torrent-show:latest -m /watch/monero-gui-$VERSION_GUI.torrent)
+          MAGNET_LINK=$(docker run --rm -v "./watch:/watch:ro" ghcr.io/plowsof/monero-torrent-show:latest -m /watch/monero-$VERSION.torrent)
+          MAGNET_LINK_GUI=$(docker run --rm -v "./watch:/watch:ro" ghcr.io/plowsof/monero-torrent-show:latest -m /watch/monero-gui-$VERSION_GUI.torrent)
           echo "MAGNET_LINK_LOCAL=$MAGNET_LINK" >> $GITHUB_ENV
           echo "MAGNET_LINK_LOCAL_GUI=$MAGNET_LINK_GUI" >> $GITHUB_ENV
           INFOHASH="${MAGNET_LINK#*btih:}"
@@ -141,19 +141,19 @@ jobs:
           {
             echo "### CLI Torrent info"
             echo '```'
-            docker run --rm -v "./watch:/watch" ghcr.io/plowsof/monero-torrent-show:latest /watch/monero-$VERSION.torrent
+            docker run --rm -v "./watch:/watch:ro" ghcr.io/plowsof/monero-torrent-show:latest /watch/monero-$VERSION.torrent
             echo '```'
             echo "### GUI Torrent info"
             echo '```'
-            docker run --rm -v "./watch:/watch" ghcr.io/plowsof/monero-torrent-show:latest /watch/monero-gui-$VERSION_GUI.torrent
+            docker run --rm -v "./watch:/watch:ro" ghcr.io/plowsof/monero-torrent-show:latest /watch/monero-gui-$VERSION_GUI.torrent
             echo '```'
             echo "### 🧲 CLI Magnet Link"
             echo '```'
-            docker run --rm -v "./watch:/watch" ghcr.io/plowsof/monero-torrent-show:latest -m /watch/monero-$VERSION.torrent
+            docker run --rm -v "./watch:/watch:ro" ghcr.io/plowsof/monero-torrent-show:latest -m /watch/monero-$VERSION.torrent
             echo '```'
             echo "### 🧲 GUI Magnet Link"
             echo '```'
-            docker run --rm -v "./watch:/watch" ghcr.io/plowsof/monero-torrent-show:latest -m /watch/monero-gui-$VERSION_GUI.torrent
+            docker run --rm -v "./watch:/watch:ro" ghcr.io/plowsof/monero-torrent-show:latest -m /watch/monero-gui-$VERSION_GUI.torrent
             echo '```'
           } >> release-notes.md
 
