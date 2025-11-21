@@ -43,11 +43,11 @@ jobs:
 
       - name: transmission-show (pull or build)
         run: |
-          tag_name="ghcr.io/plowsof/monero-torrent-show:latest"
+          tag_name="ghcr.io/${GITHUB_REPOSITORY_OWNER}/monero-torrent-show:latest"
           case "${{ steps.changes.outputs.transmission }}" in
             true)
               docker build -f ./.github/workflows/docker/Dockerfile.transmission -t $tag_name .
-              docker push -a ghcr.io/plowsof/monero-torrent-show
+              docker push -a ghcr.io/${GITHUB_REPOSITORY_OWNER}/monero-torrent-show
               ;;
             *)
               docker pull "$tag_name" || docker build -f ./.github/workflows/docker/Dockerfile.transmission -t "$tag_name" .
@@ -109,8 +109,8 @@ jobs:
           INFOHASH="${INFOHASH%%&*}"
           INFOHASH_GUI="${MAGNET_LINK_GUI#*btih:}"
           INFOHASH_GUI="${INFOHASH_GUI%%&*}"
-          TORRENT_URL="https://github.com/plowsof/monero-torrent/releases/download/${GITHUB_REF_NAME}/monero-${VERSION}.torrent"
-          TORRENT_URL_GUI="https://github.com/plowsof/monero-torrent/releases/download/${GITHUB_REF_NAME}/monero-gui-${VERSION_GUI}.torrent"
+          TORRENT_URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/monero-${VERSION}.torrent"
+          TORRENT_URL_GUI="https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/monero-gui-${VERSION_GUI}.torrent"
           echo "INFOHASH=$INFOHASH" >> $GITHUB_ENV
           echo "INFOHASH_GUI=$INFOHASH_GUI" >> $GITHUB_ENV
           echo "TORRENT_URL=$TORRENT_URL" >> $GITHUB_ENV
@@ -118,7 +118,7 @@ jobs:
 
       - name: Push new image to ghcr
         if:  github.ref_type == 'tag' || ( steps.changes.outputs.src == 'true' && github.ref == 'refs/heads/main' )
-        run: docker push -a ghcr.io/plowsof/monero-torrent-build-env
+        run: docker push -a ghcr.io/${GITHUB_REPOSITORY_OWNER}/monero-torrent-build-env
 
       - if: ${{ steps.binaries_cache.outputs.cache-hit != 'true' }}
         name: Compare hashes for local/remote build and write summary
