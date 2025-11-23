@@ -30,7 +30,6 @@ jobs:
             src:
               - 'Dockerfile'
               - 'submodules/mktorrent/**'
-              - 'create_monero_torrent.sh'
             transmission:
               - '.github/workflows/docker/Dockerfile.transmission'
 
