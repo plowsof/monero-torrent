@@ -14,6 +14,7 @@ OUTPUT_DIR="${OUTPUT_DIR:-downloads}"
 TORRENT_DIR="${TORRENT_DIR:-watch}"
 HASHES_URL="${HASHES_URL:-https://www.getmonero.org/downloads/hashes.txt}"
 BF_KEY_URL="${BF_KEY_URL:-https://raw.githubusercontent.com/monero-project/monero/master/utils/gpg_keys/binaryfate.asc}"
+BF_EXPECTED_FP="81AC591FE9C4B65C5806AFC3F0AF4D462A0BDF92" # binaryFate's fingerprint
 
 # afaict the only important thing for hash determinism is piece size
 PIECE_SIZE=21
@@ -50,6 +51,19 @@ for tuple in "$HASHES_URL:hashes.txt" "$BF_KEY_URL:binaryfate.asc"; do
     fi
   fi
 done
+
+# get fingerprint from the binaryfate.asc file
+# fingerprint (fpr) is on 10th column https://github.com/gpg/gnupg/blob/master/doc/DETAILS
+actual_fp=$(gpg --with-colons --show-keys "$OUTPUT_DIR/binaryfate.asc" 2>/dev/null | awk -F: '/^fpr:/ {print $10; exit}')
+
+if [ "$actual_fp" != "$BF_EXPECTED_FP" ]; then
+  echo "ERROR: Key fingerprint mismatch!"
+  echo "Got:      $actual_fp"
+  echo "Expected: $BF_EXPECTED_FP"
+  exit 1
+fi
+
+echo "GPG key fingerprint verified: $BF_EXPECTED_FP"
 
 gpg --import "$OUTPUT_DIR/binaryfate.asc"
 gpg --verify "$OUTPUT_DIR/hashes.txt"
