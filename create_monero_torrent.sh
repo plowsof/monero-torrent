@@ -43,7 +43,7 @@ for tuple in "$HASHES_URL:hashes.txt" "$BF_KEY_URL:binaryfate.asc"; do
     # recursively find a file https://stackoverflow.com/a/656744
     src_file=$(find "$CDN_URL" -type f -name "$url" -print -quit)
     if [ "$src_file" ]; then
-      cp "$src_file" "$OUTPUT_DIR/$filaname"
+      cp "$src_file" "$OUTPUT_DIR/"
     else
       echo "$file not found in $CDN_URL"
       exit 1
