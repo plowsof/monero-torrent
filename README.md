@@ -74,9 +74,10 @@ HASHES_URL="https://raw.githubusercontent.com/binaryFate/monero-site/refs/heads/
 
 # docker
 
-if you see `ContainerConfig` error you need to upgrade docker-compose to v2. In debian:
+if you see `ContainerConfig` error you need to upgrade docker-compose to v2 (Confirm version with: `docker compose version`). In debian:
 
 ```
+sudo apt-get update
 sudo apt-get remove docker-compose
 sudo apt-get install docker-compose-plugin
 ```
