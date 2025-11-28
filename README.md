@@ -74,12 +74,12 @@ HASHES_URL="https://raw.githubusercontent.com/binaryFate/monero-site/refs/heads/
 
 # docker
 
-if you see `ContainerConfig` error you need to upgrade docker-compose. In debian:
+if you see `ContainerConfig` error you need to upgrade docker-compose to v2. In debian:
 
-``
+```
 sudo apt-get remove docker-compose
 sudo apt-get install docker-compose-plugin
-``
+```
 
 env variables are defined in docker-compose.yml
 
@@ -89,7 +89,7 @@ after cloning:
 git clone --recurse-submodules https://github.com/plowsof/monero-torrent && cd monero-torrent
 ```
 
-Default where files are downloaded:
+Default where files are downloaded: _Note: if you see `unknown flag: --profile` then you need to update to Compose v2_
 
 ```
 docker compose --profile remote up --build
