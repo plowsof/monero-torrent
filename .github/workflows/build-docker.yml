@@ -44,7 +44,7 @@ jobs:
         run: |
           tag_name="ghcr.io/${GITHUB_REPOSITORY_OWNER}/monero-torrent-show:latest"
           case "${{ steps.changes.outputs.transmission }}" in
-            true)
+            "true")
               docker build -f ./.github/workflows/docker/Dockerfile.transmission -t $tag_name .
               docker push -a ghcr.io/${GITHUB_REPOSITORY_OWNER}/monero-torrent-show
               ;;
