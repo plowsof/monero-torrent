@@ -1,5 +1,7 @@
 # monero-torrent
 
+[![Docker local/remote build](https://github.com/plowsof/monero-torrent/actions/workflows/build-docker.yml/badge.svg)](https://github.com/plowsof/monero-torrent/actions)
+
 create torrents for Monero GUI / CLI files.
 
 - getmonero.org added as a [webseed](https://fosstorrents.com/blog/torrents-with-web-seeds/)
