@@ -192,8 +192,8 @@ jobs:
       - name: Add to RSS feed
         if: github.ref_type == 'tag'
         run: |
-          git config --local user.email "torrent@users.noreply.github.com"
-          git config --local user.name "updateRSS"
+          git config --local user.email "plowsof@protonmail.com"
+          git config --local user.name "plowsof"
           git fetch origin "${GITHUB_REF_NAME}"
           git checkout "${GITHUB_REF_NAME}"
           git checkout -b update-rss-${VERSION}
