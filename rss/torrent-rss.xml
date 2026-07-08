@@ -2,6 +2,20 @@
 <rss version="2.0">
   <channel>
   <item>
+    <title>Monero v0.18.5.1</title>
+    <link>https://github.com/plowsof/monero-torrent/releases/download/v0.18.5.1/monero-v0.18.5.1.torrent</link>
+    <guid isPermaLink="false">404e8984c255b190d97908f88224c1f0cb9db5cd</guid>
+    <pubDate>Wed, 08 Jul 2026 20:31:24 +0000</pubDate>
+    <description>Multi file torrent for Monero v0.18.5.1</description>
+  </item>
+  <item>
+    <title>Monero GUI v0.18.5.1</title>
+    <link>https://github.com/plowsof/monero-torrent/releases/download/v0.18.5.1/monero-gui-v0.18.5.1.torrent</link>
+    <guid isPermaLink="false">b93a93c36bd85c936429e78c59214a684278f58e</guid>
+    <pubDate>Wed, 08 Jul 2026 20:31:24 +0000</pubDate>
+    <description>Multi file torrent for Monero GUI v0.18.5.1</description>
+  </item>
+  <item>
     <title>Monero v0.18.5.0</title>
     <link>https://github.com/plowsof/monero-torrent/releases/download/v0.18.5.0/monero-v0.18.5.0.torrent</link>
     <guid isPermaLink="false">732fd7ddf87a293f687784b58c0c3c534abbf801</guid>
