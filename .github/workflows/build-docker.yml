@@ -66,15 +66,9 @@ jobs:
           VERSION: $VERSION
           VERSION_GUI: $VERSION_GUI
 
-      - name: check getmonero webseed + versioned hashes file
+      - name: check getmonero webseed
         run: |
           CDN_URL="https://downloads.getmonero.org"
-          if ! wget --spider -q "$CDN_URL/hashes-$VERSION.txt"; then
-            echo "::warning title=Torrent-Webseed-URLs::FAILED: $CDN_URL/hashes-$VERSION.txt"
-          fi
-          if ! wget --spider -q "$CDN_URL/hashes-$VERSION_GUI.txt"; then
-            echo "::warning title=Torrent-Webseed-URLs::FAILED: $CDN_URL/hashes-$VERSION_GUI.txt"
-          fi
           for file in $(awk '/monero-/ {print $2}' "hashes.txt"); do
             dir=cli
             part="monero-$VERSION"
