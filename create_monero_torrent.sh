@@ -84,19 +84,6 @@ cli_torrent_comment="Monero CLI $cli_version"
 mkdir -p "$OUTPUT_DIR/$cli_torrent"
 mkdir -p "$OUTPUT_DIR/$gui_torrent"
 
-for x in cli gui; do
-  # build strings
-  ver_var="${x}_version"
-  folder_var="${x}_torrent"
-  # get value of those strings as variables
-  # https://stackoverflow.com/a/8515492
-  ver="${!ver_var}"
-  folder="${!folder_var}"
-  hash_file="hashes-$ver.txt"
-  dest="$OUTPUT_DIR/$folder/$hash_file"
-  cp $OUTPUT_DIR/hashes.txt "$dest"
-done
-
 for file in $(awk '/monero-/ {print $2}' "$OUTPUT_DIR/hashes.txt"); do
   dir=cli
   torrent=$cli_torrent

@@ -28,7 +28,6 @@ create torrents for Monero GUI / CLI files.
 │       │   ├── monero-source-v0.18.4.2.tar.bz2
 │       │   ├── monero-win-x64-v0.18.4.2.zip
 │       │   └── monero-win-x86-v0.18.4.2.zip
-│       └── hashes-v0.18.4.2.txt
 │   └── monero-gui-v0.18.4.2
 │       ├── gui
 │       │   ├── monero-gui-install-win-x64-v0.18.4.2.exe
@@ -37,7 +36,6 @@ create torrents for Monero GUI / CLI files.
 │       │   ├── monero-gui-mac-x64-v0.18.4.2.dmg
 │       │   ├── monero-gui-source-v0.18.4.2.tar.bz2
 │       │   └── monero-gui-win-x64-v0.18.4.2.zip
-│       └── hashes-v0.18.4.2.txt
 └── watch
     ├── monero-v0.18.4.2.torrent
     └── monero-gui-v0.18.4.2.torrent
