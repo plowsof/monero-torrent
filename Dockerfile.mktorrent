@@ -1,0 +1,5 @@
+# used by ./mktorrent, build context is submodules/mktorrent
+FROM debian:stable-slim
+RUN apt-get update && apt-get install -y build-essential && rm -rf /var/lib/apt/lists/*
+COPY . /src
+RUN --network=none cd /src && make

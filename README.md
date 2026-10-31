@@ -49,10 +49,11 @@ Grab the torrent from https://github.com/plowsof/monero-torrent/releases
 
 To build the torrent file:
 
-- Clone this repo, build and copy the mktorrent binary to the `monero-torrent` dir and run `create_monero_torrent.sh`:
+- Clone this repo and run `create_monero_torrent.sh` (needs docker, `./mktorrent` runs mktorrent in a container with no network):
 ```
-git clone --recurse-submodules https://github.com/plowsof/monero-torrent && cd monero-torrent && cd submodules/mktorrent && make && mv mktorrent ../../ && cd ../.. && chmod +x create_monero_torrent.sh && ./create_monero_torrent.sh
+git clone --recurse-submodules https://github.com/plowsof/monero-torrent && cd monero-torrent && ./create_monero_torrent.sh
 ```
+_Note: if you built the mktorrent binary with the old steps, `rm mktorrent` before `git pull`_
 
 - By default the script downloads binaries from getmoneros CDN
 - to obtain files locally, pass `CDN_URL` which is a path containing all files required including `binaryfate.asc` and `hashes.txt`

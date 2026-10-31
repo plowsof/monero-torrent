@@ -1,0 +1,27 @@
+#!/bin/sh
+# run mktorrent in a container with no network, it can only see downloads (ro) and an empty temp dir
+set -e
+out=$(realpath "${OUTPUT_DIR:-downloads}")
+torrents=$(realpath "${TORRENT_DIR:-watch}")
+dir=$(dirname "$0")
+
+# the -o file is the only thing we copy back
+for arg; do
+  [ "$prev" = "-o" ] && torrent="$arg"
+  prev="$arg"
+done
+[ -e "$torrent" ] && { echo "$torrent already exists"; exit 1; }
+
+docker build -q -t mktorrent-sandbox -f "$dir/Dockerfile.mktorrent" "$dir/submodules/mktorrent" >/dev/null
+
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+docker run --rm --network none --read-only --cap-drop ALL --security-opt no-new-privileges \
+  --pids-limit 64 --memory 1g --user "$(id -u):$(id -g)" \
+  -v "$out:$out:ro" -v "$tmp:$torrents" -w "$PWD" \
+  mktorrent-sandbox /src/mktorrent "$@"
+
+# regular file only, no symlinks
+new="$tmp/$(basename "$torrent")"
+[ -f "$new" ] && [ ! -L "$new" ] || { echo "mktorrent did not create $torrent"; exit 1; }
+cp "$new" "$torrent"
